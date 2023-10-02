@@ -7,26 +7,34 @@ import 'package:flutter/material.dart';
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 // todo the id
-  static String  id = 'registerPage';
+  static String id = 'registerPage';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
+        child: ListView(
           children: [
             SizedBox(
+              height: 84,
+            ),
+            Image.asset(
+              'assets/images/scholar.png',
               height: 100,
             ),
-            Image.asset('assets/images/scholar.png'),
-            Text(
-              'Chat App',
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.white,
-                fontFamily: 'Pacifico',
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Chat App',
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.white,
+                    fontFamily: 'Pacifico',
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 40,
