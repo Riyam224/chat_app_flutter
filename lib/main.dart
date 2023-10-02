@@ -14,7 +14,8 @@ class ChattApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         'LoginPage': (context) => LoginPage(),
-        'RegisterPage' : (context) => RegisterPage(),
+        // todo
+        RegisterPage.id: (context) => RegisterPage(),
       },
       initialRoute: 'LoginPage',
     );

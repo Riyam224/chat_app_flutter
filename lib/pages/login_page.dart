@@ -71,8 +71,8 @@ class LoginPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // todo 
-                    Navigator.pushNamed(context, 'RegisterPage');
+                    // todo
+                    Navigator.pushNamed(context, RegisterPage.id);
                   },
                   child: Text(
                     'SignUp',
