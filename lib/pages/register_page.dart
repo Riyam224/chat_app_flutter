@@ -1,4 +1,5 @@
 import 'package:chatt_app/constants.dart';
+import 'package:chatt_app/helper/show_snack_bar.dart';
 import 'package:chatt_app/pages/login_page.dart';
 import 'package:chatt_app/pages/widgets/custom_button.dart';
 import 'package:chatt_app/pages/widgets/custom_text_field.dart';
@@ -75,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   height: 20,
                 ),
-                CustomTextField(
+                CustomFormTextField(
                   onChanged: (data) {
                     email = data;
                   },
@@ -84,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   height: 20,
                 ),
-                CustomTextField(
+                CustomFormTextField(
                     onChanged: (data) {
                       password = data;
                     },
@@ -157,10 +158,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
-  }
 
   Future<void> registerUser() async {
     UserCredential user = await FirebaseAuth.instance

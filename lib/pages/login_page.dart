@@ -1,100 +1,161 @@
 import 'package:chatt_app/constants.dart';
-import 'package:chatt_app/pages/register_page.dart';
+import 'package:chatt_app/helper/show_snack_bar.dart';
+import 'package:chatt_app/pages/login_page.dart';
 import 'package:chatt_app/pages/widgets/custom_button.dart';
 import 'package:chatt_app/pages/widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  LoginPage({super.key});
+// todo the id
+  static String id = 'loginPage';
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String? email;
+
+  String? password;
+
+  bool isLoading = false;
+
+  GlobalKey<FormState> FormKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 84,
-            ),
-            Image.asset(
-              'assets/images/scholar.png',
-              height: 100,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+    return ModalProgressHUD(
+      inAsyncCall: isLoading,
+      child: Scaffold(
+        backgroundColor: kPrimaryColor,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          // todo
+          child: Form(
+            key: FormKey,
+            child: ListView(
               children: [
-                Text(
-                  'Chat App',
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                    fontFamily: 'Pacifico',
-                  ),
+                SizedBox(
+                  height: 84,
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              children: [
-                Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                  ),
+                Image.asset(
+                  'assets/images/scholar.png',
+                  height: 100,
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CustomTextField(
-              hintText: 'Email',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CustomTextField(hintText: 'Password'),
-            SizedBox(
-              height: 20,
-            ),
-            CustomButton(
-              text: 'Login',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'dont have an account ',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // todo
-                    Navigator.pushNamed(context, RegisterPage.id);
-                  },
-                  child: Text(
-                    'SignUp',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Chat App',
+                      style: TextStyle(
+                        fontSize: 32,
+                        color: Colors.white,
+                        fontFamily: 'Pacifico',
+                      ),
                     ),
-                  ),
-                )
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomFormTextField(
+                  onChanged: (data) {
+                    email = data;
+                  },
+                  hintText: 'Email',
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomFormTextField(
+                    onChanged: (data) {
+                      password = data;
+                    },
+                    hintText: 'Password'),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  onTap: () async {
+                    if (FormKey.currentState!.validate()) {
+                      isLoading = true;
+                      setState(() {});
+                      try {
+                        await loginUser();
+                        showSnackBar(context, 'success');
+                      } on FirebaseAuth catch (ex) {
+                        if (ex == 'user not found ') {
+                          showSnackBar(context, 'user not found ');
+                        } else if (ex == 'wrong password ') {
+                          showSnackBar(context, 'wrong password ');
+                        }
+                      } catch (ex) {
+                        showSnackBar(context, 'there was an error ');
+                      }
+                      isLoading = false;
+                      setState(() {});
+                    } else {}
+                  },
+                  // todo error msg
+                  text: 'Register',
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'already have an account ',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // todo pushnamed
+                        // Navigator.pushNamed(context, "LoginPage");
+                        // todo
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> loginUser() async {
+    UserCredential user = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email!, password: password!);
   }
 }
