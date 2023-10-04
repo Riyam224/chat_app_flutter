@@ -12,114 +12,125 @@ class RegisterPage extends StatelessWidget {
   static String id = 'registerPage';
   String? email;
   String? password;
+  GlobalKey<FormState> FormKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 84,
-            ),
-            Image.asset(
-              'assets/images/scholar.png',
-              height: 100,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Chat App',
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                    fontFamily: 'Pacifico',
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              children: [
-                Text(
-                  'Register',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CustomTextField(
-              onChanged: (data) {
-                email = data;
-              },
-              hintText: 'Email',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CustomTextField(
-                onChanged: (data) {
-                  password = data;
-                },
-                hintText: 'Password'),
-            SizedBox(
-              height: 20,
-            ),
-            CustomButton(
-              onTap: () async {
-                try {
-                  await registerUser();
-                } on FirebaseAuth catch (ex) {
-                  if (ex == 'weak-password') {
-                    showSnackBar(context, 'weak password');
-                  } else if (ex == 'email-already-in-use') {
-                    showSnackBar(context, 'email already in use');
-                  }
-                }
-                showSnackBar(context, 'success');
-              },
-              // todo error msg
-              text: 'Register',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'already have an account ',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // todo pushnamed
-                    // Navigator.pushNamed(context, "LoginPage");
-                    // todo
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Login',
+        // todo
+        child: Form(
+          key: FormKey,
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 84,
+              ),
+              Image.asset(
+                'assets/images/scholar.png',
+                height: 100,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Chat App',
                     style: TextStyle(
+                      fontSize: 32,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Pacifico',
                     ),
                   ),
-                )
-              ],
-            ),
-          ],
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Register',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                onChanged: (data) {
+                  email = data;
+                },
+                hintText: 'Email',
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                  onChanged: (data) {
+                    password = data;
+                  },
+                  hintText: 'Password'),
+              SizedBox(
+                height: 20,
+              ),
+              CustomButton(
+                onTap: () async {
+                  if (FormKey.currentState!.validate()) {
+  try {
+    await registerUser();
+  } on FirebaseAuth catch (ex) {
+    if (ex == 'weak-password') {
+      showSnackBar(context, 'weak password');
+    } else if (ex == 'email-already-in-use') {
+      showSnackBar(context, 'email already in use');
+    }
+  } catch (ex) {
+    showSnackBar(context, 'there was an error ');
+  }
+  showSnackBar(context, 'success');
+} else {
+   
+}
+                },
+                // todo error msg
+                text: 'Register',
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'already have an account ',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // todo pushnamed
+                      // Navigator.pushNamed(context, "LoginPage");
+                      // todo
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
