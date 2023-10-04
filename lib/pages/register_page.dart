@@ -2,12 +2,16 @@ import 'package:chatt_app/constants.dart';
 import 'package:chatt_app/pages/login_page.dart';
 import 'package:chatt_app/pages/widgets/custom_button.dart';
 import 'package:chatt_app/pages/widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 // todo the id
   static String id = 'registerPage';
+  String? email;
+  String? password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,16 +58,47 @@ class RegisterPage extends StatelessWidget {
               height: 20,
             ),
             CustomTextField(
+              onChanged: (data) {
+                email = data;
+              },
               hintText: 'Email',
             ),
             SizedBox(
               height: 20,
             ),
-            CustomTextField(hintText: 'Password'),
+            CustomTextField(
+                onChanged: (data) {
+                  password = data;
+                },
+                hintText: 'Password'),
             SizedBox(
               height: 20,
             ),
             CustomButton(
+              onTap: () async {
+                try {
+                  UserCredential user = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                          email: email!, password: password!);
+                } on FirebaseAuth catch (ex) {
+                  if (ex == 'weak-password') {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('weak password')));
+                  } else if (ex == 'email-already-in-use') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('email-already-in-use'),
+                      ),
+                    );
+                  }
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('success'),
+                  ),
+                );
+              },
+              // todo error msg
               text: 'Register',
             ),
             SizedBox(
