@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 84,
                 ),
                 Image.asset(
-                  'assets/images/scholar.png',
+                  kLogo,
                   height: 100,
                 ),
                 Row(

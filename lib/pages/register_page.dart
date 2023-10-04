@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 84,
                 ),
                 Image.asset(
-                  'assets/images/scholar.png',
+                  kLogo,
                   height: 100,
                 ),
                 Row(
@@ -139,7 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Login',
+                        'Regjster',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
