@@ -1,5 +1,6 @@
 import 'package:chatt_app/constants.dart';
 import 'package:chatt_app/helper/show_snack_bar.dart';
+import 'package:chatt_app/pages/chat_page.dart';
 import 'package:chatt_app/pages/login_page.dart';
 import 'package:chatt_app/pages/widgets/custom_button.dart';
 import 'package:chatt_app/pages/widgets/custom_text_field.dart';
@@ -11,7 +12,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});
 // todo the id
-  static String id = 'registerPage';
+  static String id = 'register page';
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -97,11 +98,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   onTap: () async {
                     if (FormKey.currentState!.validate()) {
                       isLoading = true;
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                       try {
                         await registerUser();
+                        Navigator.pushNamed(context, ChatPage.id);
                         showSnackBar(context, 'success');
                       } on FirebaseAuth catch (ex) {
                         if (ex == 'weak-password') {
@@ -113,9 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         showSnackBar(context, 'there was an error ');
                       }
                       isLoading = false;
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     } else {}
                   },
                   // todo error msg
@@ -157,7 +155,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-
 
   Future<void> registerUser() async {
     UserCredential user = await FirebaseAuth.instance

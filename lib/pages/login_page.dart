@@ -1,5 +1,6 @@
 import 'package:chatt_app/constants.dart';
 import 'package:chatt_app/helper/show_snack_bar.dart';
+import 'package:chatt_app/pages/chat_page.dart';
 import 'package:chatt_app/pages/login_page.dart';
 import 'package:chatt_app/pages/widgets/custom_button.dart';
 import 'package:chatt_app/pages/widgets/custom_text_field.dart';
@@ -11,7 +12,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 // todo the id
-  static String id = 'loginPage';
+  static String id = 'login page';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -101,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                       try {
                         await loginUser();
                         showSnackBar(context, 'success');
+                        Navigator.pushNamed(context, ChatPage.id);
                       } on FirebaseAuth catch (ex) {
                         if (ex == 'user not found ') {
                           showSnackBar(context, 'user not found ');
@@ -115,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else {}
                   },
                   // todo error msg
-                  text: 'Register',
+                  text: 'Login',
                 ),
                 SizedBox(
                   height: 20,

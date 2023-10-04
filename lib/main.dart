@@ -1,4 +1,5 @@
 import 'package:chatt_app/firebase_options.dart';
+import 'package:chatt_app/pages/chat_page.dart';
 import 'package:chatt_app/pages/login_page.dart';
 import 'package:chatt_app/pages/register_page.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +20,12 @@ class ChattApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        'LoginPage': (context) => LoginPage(),
+        LoginPage.id: (context) => LoginPage(),
         // todo
         RegisterPage.id: (context) => RegisterPage(),
+        ChatPage.id: (context) => ChatPage(),
       },
-      initialRoute: 'LoginPage',
+      initialRoute: LoginPage.id,
     );
   }
 }
