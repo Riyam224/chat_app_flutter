@@ -6,17 +6,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatPage extends StatelessWidget {
   ChatPage({super.key});
+
   static String id = 'chat page';
+
+  TextEditingController controller = TextEditingController();
   // todo
 
   CollectionReference messages =
       FirebaseFirestore.instance.collection(kMessagesCollection);
-  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-        future: messages.get(),
+    return StreamBuilder<QuerySnapshot>(
+        stream: messages.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             // print(snapshot.data!.docs[0]['message']);
