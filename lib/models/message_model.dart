@@ -3,9 +3,10 @@ import 'package:chatt_app/constants.dart';
 
 class Message {
   final String message;
-  Message(this.message);
+  final String id;
+  Message(this.message, this.id);
 
   factory Message.fromJson(jsonData) {
-    return Message(jsonData[kMessage]);
+    return Message(jsonData[kMessage], jsonData['id']);
   }
 }

@@ -51,9 +51,12 @@ class ChatPage extends StatelessWidget {
                         controller: _controller,
                         itemCount: messagesList.length,
                         itemBuilder: (context, index) {
-                          return ChatBubble(
-                            message: messagesList[index],
-                          );
+                          return messagesList[index].id == email
+                              ? ChatBubble(
+                                  message: messagesList[index],
+                                )
+                              : ChatBubbleForFriend(
+                                  message: messagesList[index]);
                         }),
                   ),
                   Padding(
@@ -66,7 +69,6 @@ class ChatPage extends StatelessWidget {
                           kMessage: data,
                           KCreatedAt: DateTime.now(),
                           'id': email
-                        
                         });
                         controller.clear();
                         // todo animate to
