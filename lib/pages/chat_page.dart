@@ -17,8 +17,9 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var email = ModalRoute.of(context)!.settings.arguments;
     return StreamBuilder<QuerySnapshot>(
-        stream: messages.orderBy(KCreatedAt , descending: true).snapshots(),
+        stream: messages.orderBy(KCreatedAt, descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             // print(snapshot.data!.docs[0]['message']);
@@ -61,8 +62,12 @@ class ChatPage extends StatelessWidget {
                       // todo
                       controller: controller,
                       onSubmitted: (data) {
-                        messages
-                            .add({kMessage: data, KCreatedAt: DateTime.now()});
+                        messages.add({
+                          kMessage: data,
+                          KCreatedAt: DateTime.now(),
+                          'id': email
+                        
+                        });
                         controller.clear();
                         // todo animate to
                         _controller.animateTo(
